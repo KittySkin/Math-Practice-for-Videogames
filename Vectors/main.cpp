@@ -2,8 +2,17 @@
 
 class Vector {
 public:
+    Vector() {}
+    Vector(float X, float Y){
+        x = X;
+        y = Y;
+    }
+
     float Length() const;
     float LengthSqr() const;
+
+    Vector operator*(float s) const;
+    Vector operator/(float s) const;
 
     float x, y;
 };
@@ -14,6 +23,24 @@ public:
 
     float x, y;
 };
+
+Vector Vector::operator*(float s) const {
+    Vector scaled;
+
+    scaled.x = x * s;
+    scaled.y = y * s;
+
+    return scaled;
+}
+
+Vector Vector::operator/(float s) const {
+    Vector scaled;
+
+    scaled.x = x / s;
+    scaled.y = y / s;
+
+    return scaled;
+}
 
 float Vector::Length() const {
     float length;
@@ -49,29 +76,21 @@ Point Point::AddVector(Vector v) {
 }
 
 int main() {
-    Point p; // (0, -1)
-    p.x = 0;
-    p.y = -1;
+    Vector v(3, 4);
 
-    Point i; // (1, 1)
-    i.x = 1;
-    i.y = 1;
+    std::cout << "Pac man's initial speed: " << v.Length() << "\n";
 
-    Point c; // (2, -1)
-    c.x = 2;
-    c.y = -1;
+    Vector doubled;
 
-    Vector cp;
-    Vector ip;
+    doubled = v * 2;
 
-    cp = p - c;
-    ip = p - i;
+    std::cout << "Pac man's doubled speed: " << doubled.Length() << "\n";
 
-    float length_sqr_cp = cp.LengthSqr();
-    float length_sqr_ip = ip.LengthSqr();
+    Vector halved;
 
-    std::cout << "Length squared of CP: " << length_sqr_cp << "\n";
-    std::cout << "Length squared of IP: " << length_sqr_ip << "\n";
+    halved = v / 2;
+
+    std::cout << "Pac man's halved speed: " << halved.Length() << "\n";
 
     return 0;
 }
