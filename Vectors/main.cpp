@@ -3,16 +3,25 @@
 class Vector {
 public:
     Vector() {}
-    Vector(float X, float Y){
+
+    Vector(float X, float Y) {
         x = X;
         y = Y;
     }
 
     float Length() const;
+
     float LengthSqr() const;
 
+    Vector operator+(const Vector& v) const;
+
+    Vector operator-(const Vector& v) const;
+
     Vector operator*(float s) const;
+
     Vector operator/(float s) const;
+
+    Vector Normalized() const;
 
     float x, y;
 };
@@ -21,8 +30,35 @@ class Point {
 public:
     Point AddVector(Vector v);
 
+    Point() {}
+
+    Point(float X, float Y) {
+        x = X;
+        y = Y;
+    }
+
     float x, y;
 };
+
+Vector Vector::operator+(const Vector& v) const {
+    Vector r;
+
+    r.x = x + v.x;
+    r.y = y + v.y;
+
+    return r;
+}
+
+Vector Vector::operator-(const Vector& v) const {
+    return Vector(x - v.x, y - v.y);
+}
+
+Vector Vector::Normalized() const {
+    Vector normalized;
+
+    normalized = (*this) / Length();
+    return normalized;
+}
 
 Vector Vector::operator*(float s) const {
     Vector scaled;
@@ -63,6 +99,7 @@ Vector operator-(Point a, Point b) {
 
     v.x = a.x - b.x;
     v.y = a.y - b.y;
+
     return v;
 }
 
@@ -76,21 +113,12 @@ Point Point::AddVector(Vector v) {
 }
 
 int main() {
-    Vector v(3, 4);
+    Vector r(4, 0);
+    Vector d(0, -5);
 
-    std::cout << "Pac man's initial speed: " << v.Length() << "\n";
+    Vector v = r + d;
 
-    Vector doubled;
-
-    doubled = v * 2;
-
-    std::cout << "Pac man's doubled speed: " << doubled.Length() << "\n";
-
-    Vector halved;
-
-    halved = v / 2;
-
-    std::cout << "Pac man's halved speed: " << halved.Length() << "\n";
+    std::cout << "Pac man's new velocity: (" << v.x << ", " << v.y << ")\n";
 
     return 0;
 }
